@@ -1,27 +1,5 @@
-// import express from 'express';
-// import { createBook } from './bookController';
-// import multer from 'multer';
-// import path from 'node:path';
-// const bookRouter = express.Router();
-
-// // file uplaod
-// const upload = multer({
-//     dest: path.resolve(__dirname, '../../public/data/uploads'),
-//     limits: {fileSize: 3e7} //3e7 means 30mb
-
-// })
-
-// bookRouter.post('/', upload.fields([
-//     {name : "coverImage", maxCount: 1},
-//     {name: "file", maxCount: 1}
-// ]) , createBook);
-
-
-// export default bookRouter;
-
-
 import express, { Request, Response, NextFunction } from 'express';
-import { createBook } from './bookController';
+import { createBook, getListBook, updateBook } from './bookController';
 import multer from 'multer';
 import path from 'path';
 import authenticates from '../middlewares/authenticates';
@@ -43,10 +21,20 @@ const fileSizeLimit = (req: Request, res: Response, next: NextFunction) => {
     next();
 };
 
-// Route for uploading books
+// Route for uploading books (crate Book)
 bookRouter.post('/', authenticates, upload.fields([
     { name: "coverImage", maxCount: 1 },
     { name: "file", maxCount: 1 }
 ]), fileSizeLimit, createBook);
+
+//update book
+bookRouter.patch('/:bookId', authenticates, upload.fields([
+    { name: "coverImage", maxCount: 1 },
+    { name: "file", maxCount: 1 }
+]), fileSizeLimit, updateBook);
+
+
+bookRouter.get('/', getListBook)
+
 
 export default bookRouter;
