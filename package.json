@@ -4,8 +4,8 @@
   "description": "this is my ebook project using next js node js react ",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev" : "nodemon server.js"
+    "dev": "nodemon server.ts",
+    "start": "node server.ts"
   },
   "repository": {
     "type": "git",
@@ -20,9 +20,13 @@
   "author": "sunil sharma <sunielsharma1921@gmail.com>",
   "license": "ISC",
   "devDependencies": {
+    "@eslint/js": "^9.1.1",
     "@types/node": "^20.12.7",
+    "eslint": "^8.57.0",
+    "globals": "^15.0.0",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.7.0"
   }
 }
