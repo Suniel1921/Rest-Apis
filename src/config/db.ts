@@ -3,6 +3,7 @@ import { config } from './config';
 
 const connectDB = async ()=>{
   try {
+
     mongoose.connection.on('connected',()=>{
         console.log('Database Connected Successfully');
     })
@@ -13,7 +14,7 @@ const connectDB = async ()=>{
     
     await  mongoose.connect(config.databaseUrl as string);
 
-    
+   
     
   } catch (error) {
     console.error('Failed to Connected Datbase', error);
