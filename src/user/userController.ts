@@ -4,6 +4,7 @@ import userModel from "./userModel";
 import bcrypt from 'bcrypt';
 import { sign } from "jsonwebtoken";
 import { config } from "../config/config";
+import { User } from "./userTypes";
 
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
   const { name, email, password } = req.body;
@@ -15,22 +16,44 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 
   //database call ()check user exit or not
-  const user = await userModel.findOne({email});
+  try {
+    const user = await userModel.findOne({email});
   if(user){
     const error = createHttpError(400, 'user already exit with this email');
     return next(error)
   }
+    
+  } catch (error) {
+    return next(createHttpError(500, 'Error while getting user'))
+
+    
+  }
 
   //password hash
   const hashedPassword = await bcrypt.hash(password, 10);
-  const newUser = await userModel.create({name, email, password: hashedPassword});
+  let newUser : User;
+  try {
+     newUser = await userModel.create({name, email, password: hashedPassword});
+    
+  } catch (error) {
+    return next(createHttpError(500, 'Error while creating user'))
+    
+  }
 
-  //token genertion jwt
+  try {
+    //token genertion jwt
   const token = sign({sub: newUser._id}, config.jwtSecret as string, {expiresIn: '7d', algorithm: 'HS256'})
 
-  //prorcess
   //response
   res.json({ accessToken: token});
+    
+  } catch (error) {
+    return next(createHttpError(500, 'Error while singing the jwt token'))
+    
+  }
+  
+
+  
 };
 
 export { createUser };
