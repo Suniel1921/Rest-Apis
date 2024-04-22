@@ -5,6 +5,7 @@ const _config = {
     port : process.env.PORT,
     databaseUrl : process.env.MONGO_CONNECTION_STRING,
     env : process.env.NODE_ENV,
+    jwtSecret : process.env.JWT_SECRET,
 };
 
 export const config = Object.freeze(_config) //freeze mean it does not allowed to overwrite. read only
