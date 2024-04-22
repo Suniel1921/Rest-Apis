@@ -4,6 +4,7 @@ import createHttpError from "http-errors";
 import userRouter from "./user/userRouter";
 
 const app = express();
+app.use(express.json());
 
 //routes
 //https methods -- GET, POST, PUT, PATCH, DELETE
