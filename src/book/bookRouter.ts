@@ -24,6 +24,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import { createBook } from './bookController';
 import multer from 'multer';
 import path from 'path';
+import authenticates from '../middlewares/authenticates';
 
 const bookRouter = express.Router();
 
@@ -43,7 +44,7 @@ const fileSizeLimit = (req: Request, res: Response, next: NextFunction) => {
 };
 
 // Route for uploading books
-bookRouter.post('/', upload.fields([
+bookRouter.post('/', authenticates, upload.fields([
     { name: "coverImage", maxCount: 1 },
     { name: "file", maxCount: 1 }
 ]), fileSizeLimit, createBook);
